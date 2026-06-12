@@ -1,0 +1,698 @@
+{
+  "info": {
+    "_postman_id": "54327d01-3cbb-4849-bdd1-6690b00d3723",
+    "name": "QA Portfolio - JSONPlaceholder",
+    "description": "API testing portfolio project using JSONPlaceholder and Postman. Includes CRUD operations, positive/negative scenarios, boundary testing, and response validation for Users and Posts endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55170615",
+    "_collection_link": "https://go.postman.co/collection/55170615-54327d01-3cbb-4849-bdd1-6690b00d3723?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "GET",
+          "item": [
+            {
+              "name": "GET - Get all users",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const data = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response is JSON\", function() {\r",
+                      "    pm.response.to.be.json;\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response is an array\", function() {\r",
+                      "    pm.expect(Array.isArray(data)).to.be.true;\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Users array is not empty\", function() {\r",
+                      "    const data = pm.response.json();\r",
+                      "    pm.expect(data.length).to.be.above(0);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Each user has required fields\", function () {\r",
+                      "    data.forEach(user => {\r",
+                      "        pm.expect(user).to.have.property('id');\r",
+                      "        pm.expect(user).to.have.property('name');\r",
+                      "        pm.expect(user).to.have.property('email');\r",
+                      "    });\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"User ID is numeric\", function () {\r",
+                      "    data.forEach(user => {\r",
+                      "        pm.expect(user.id).to.be.a('number');\r",
+                      "    });\r",
+                      "})\r",
+                      "\r",
+                      "pm.test(\"Email field contains @\", function () {\r",
+                      "    data.forEach(user => {\r",
+                      "        pm.expect(user.email).to.include('@');\r",
+                      "        });\r",
+                      "    });\r",
+                      "    \r",
+                      "pm.test(\"Response time is under 500ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Get user by ID (valid user)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const user = pm.response.json();",
+                      "",
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Correct user ID\", function () {",
+                      "    pm.expect(user.id).to.eql(1);",
+                      "});",
+                      "",
+                      "pm.test(\"User has required fields with valid types\", function () {",
+                      "   ",
+                      "    pm.expect(user).to.have.property(\"id\");",
+                      "    pm.expect(user.id).to.be.a(\"number\");",
+                      "",
+                      "    pm.expect(user).to.have.property(\"name\");",
+                      "    pm.expect(user.name).to.be.a(\"string\");",
+                      "",
+                      "    pm.expect(user).to.have.property(\"email\");",
+                      "    pm.expect(user.email).to.include(\"@\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/users/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Get user by ID (non-numeric ID) [NEGATIVE]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400 or 404\", function () {",
+                      "    pm.expect(pm.response.code).to.be.oneOf([400, 404]);",
+                      "});",
+                      "",
+                      "",
+                      "pm.test(\"Response time is acceptable\", function () {",
+                      "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+                      "});",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/abc",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "abc"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Get user by ID (invalid ID) [NEGATIVE]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400 or 404\", function () {\r",
+                      "    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response time is under 1000ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/users/-1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "-1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - User by ID 0 [BOUNDARY]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400 or 404\", function () {\r",
+                      "    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response time is under 1000ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                      "});\r",
+                      "\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/0",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "0"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - User by ID 999999 [BOUNDARY]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400 or 404\", function () {\r",
+                      "    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response time is acceptable\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(1000);    \r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/users/999999",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "999999"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "description": "Contains GET endpoint tests for the Users API, covering retrieval of all users and single user by ID. Includes positive, negative, and boundary test scenarios. Validates response status codes, data structure, and required fields."
+        },
+        {
+          "name": "POST",
+          "item": [
+            {
+              "name": "POST - Create user [POSITIVE]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const user = pm.response.json();",
+                      "const requestBody = JSON.parse(pm.request.body.raw);",
+                      "",
+                      "pm.test(\"Status code is 201\", function () {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "pm.test(\"Response is JSON\", function () {",
+                      "    pm.response.to.be.json;",
+                      "});",
+                      "",
+                      "pm.test(\"User is created with ID\", function () {",
+                      "    pm.expect(user).to.have.property(\"id\");",
+                      "    pm.expect(user.id).to.be.a(\"number\");",
+                      "});",
+                      "",
+                      "pm.test(\"Username matches request\", function () {",
+                      "    pm.expect(user.name).to.eql(requestBody.name);",
+                      "});",
+                      "",
+                      "pm.test(\"Response time is acceptable\", function () {",
+                      "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+                      "});",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Anya\",\r\n    \"username\": \"Gandalf\",\r\n    \"email\": \"ganndafl@test.com\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST - Create user [NEGATIVE]",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name:\" \"Anya\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "PUT",
+          "item": [
+            {
+              "name": "PUT - Update user [POSITIVE]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const jsonData = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response time is under 1000ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"User ID is correct\", function () {\r",
+                      "    pm.expect(jsonData.id).to.eql(1);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Name was updated\", function () {\r",
+                      "    pm.expect(jsonData.name).to.eql(\"Anya Updated\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Username was updated\", function () {\r",
+                      "    pm.expect(jsonData.username).to.eql(\"gandalf_updated\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Email was updated\", function () {\r",
+                      "    pm.expect(jsonData.email).to.eql(\"anya.updated@test.com\")\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"id\": 1,\r\n  \"name\": \"Anya Updated\",\r\n  \"username\": \"gandalf_updated\",\r\n  \"email\": \"anya.updated@test.com\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT - Update user (invalid email) [NEGATIVE]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"id\": 1,\r\n  \"name\": \"Anya Updated\",\r\n  \"username\": \"gandalf_updated\",\r\n  \"email\": \"not-an-email\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "PATCH",
+          "item": [
+            {
+              "name": "Update Email [POSITIVE]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const jsonData = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Status code 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "})\r",
+                      "\r",
+                      "pm.test(\"Email updated\", function () {\r",
+                      "    pm.expect(jsonData.email).to.eql(\"new.email@test.com\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"new.email@test.com\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Email [NEGATIVE]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const jsonData = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Status code 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "})\r",
+                      "\r",
+                      "pm.test(\"Email updated\", function () {\r",
+                      "    pm.expect(jsonData.email).to.eql(\"new.email@test.com\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"invalid-email\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "DELETE",
+          "item": [
+            {
+              "name": "DELETE - Delete user",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response time is under 1000ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ],
+      "description": "Contains CRUD tests for Users endpoint including positive, negative, and boundary test scenarios."
+    }
+  ]
+}
