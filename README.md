@@ -67,5 +67,12 @@ Verified:
 ## Tools Used
 
 - Postman
-- JSONPlaceholder REST API
+- JSONPplaceholder REST API
 - REST API concepts (HTTP methods, JSON responses)
+
+## Key Learning Outcomes
+
+- Understanding REST API structure and HTTP methods
+- Validating API responses using Postman
+- Designing basic CRUD test scenarios
+- Differentiating positive and negative test cases
