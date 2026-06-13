@@ -4,7 +4,9 @@
 
 This project demonstrates manual API testing using Postman against the JSONPlaceholder REST API.
 
-The goal was to practice testing CRUD operations, HTTP methods, response validation, and API behavior.
+The goal was to practice testing REST API endpoints by executing CRUD operations, validating HTTP responses, and verifying API behavior through automated Postman test scripts.
+
+The project includes testing of Users and Posts endpoints, covering positive and negative scenarios, status code verification, response structure validation, data integrity checks, and response time validation.
 
 ---
 
