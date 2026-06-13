@@ -12,7 +12,7 @@ The goal was to practice testing CRUD operations, HTTP methods, response validat
 
 ### Create
 
-`POST /posts`
+`POST /users`
 
 Verified:
 - Successful creation of a new resource
@@ -23,8 +23,8 @@ Verified:
 
 ### Read
 
-`GET /posts`  
-`GET /posts/{id}`
+`GET /users`  
+`GET /users/{id}`
 
 Verified:
 - Retrieval of existing records
@@ -35,7 +35,7 @@ Verified:
 
 ### Update
 
-`PUT /posts/{id}`
+`PUT /users/{id}`
 
 Verified:
 - Successful update of existing resource
@@ -46,7 +46,7 @@ Verified:
 
 #### Partial Update
 
-`PATCH /posts/{id}`
+`PATCH /users/{id}`
 
 Verified:
 - Successful partial update of a resource
@@ -58,7 +58,7 @@ Verified:
 
 ### Delete
 
-`DELETE /posts/{id}`
+`DELETE /users/{id}`
 
 Verified:
 - Successful deletion of resource
