@@ -44,6 +44,18 @@ Verified:
 
 ---
 
+#### Partial Update
+
+`PATCH /posts/{id}`
+
+Verified:
+- Successful partial update of a resource
+- Modification of selected fields only
+- Response payload validation
+- Status code verification
+
+---
+
 ### Delete
 
 `DELETE /posts/{id}`
